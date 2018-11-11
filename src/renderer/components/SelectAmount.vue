@@ -2,12 +2,12 @@
   <div id="wrapper">
     <p class="title">Select Amount</p>
     <div class="btn-container">
-      <button class="btn-amnt">5 USD =  {{5*1/eosprice | round(4)}} EOS</button>
-      <button class="btn-amnt">10 USD = {{10*1/eosprice | round(4)}} EOS</button>
-      <button class="btn-amnt">20 USD = {{20*1/eosprice | round(4)}} EOS</button>
-      <button class="btn-amnt">50 USD = {{50*1/eosprice | round(4)}} EOS</button>
-      <button class="btn-amnt">100 USD = {{100*1/eosprice | round(4)}} EOS</button>
-      <button class="btn-amnt">Other</button>
+      <button class="btn-amnt" @click="next()">5 USD =  {{5*1/eosprice | round(4)}} EOS</button>
+      <button class="btn-amnt" @click="next()">10 USD = {{10*1/eosprice | round(4)}} EOS</button>
+      <button class="btn-amnt" @click="next()">20 USD = {{20*1/eosprice | round(4)}} EOS</button>
+      <button class="btn-amnt" @click="next()">50 USD = {{50*1/eosprice | round(4)}} EOS</button>
+      <button class="btn-amnt" @click="next()">100 USD = {{100*1/eosprice | round(4)}} EOS</button>
+      <button class="btn-amnt" @click="next()">Other</button>
     </div>
     
   </div>
@@ -32,9 +32,6 @@
       next: function(){
         this.$router.push('/ad')
       }
-    },
-    mounted(){
-      setTimeout(this.next, 3000);
     }
   }
 </script>

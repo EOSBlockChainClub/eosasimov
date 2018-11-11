@@ -82,6 +82,7 @@ ipc.on('start-nfc', function (event, arg) {
     let uid = pn532.readPassiveTarget()
     if (uid != null){
       console.log('Found UID: ', bytesToHex(uid))
+      intervalo.clearInterval()
       event.sender.send('lectura')
     }
     }, 300);

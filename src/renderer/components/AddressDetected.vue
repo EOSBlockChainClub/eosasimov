@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import { ipcRenderer } from 'electron'
   export default {
     name:'AddressDetected',
     methods:{
@@ -17,7 +18,11 @@
       }
     },
     mounted(){
-      setTimeout(this.next, 3000);
+      ipcRenderer.send('start-nfc')
+      ipcRenderer.on('lectura', (event, data) => {
+        
+        this.next();
+      })
     }
   }
 </script>

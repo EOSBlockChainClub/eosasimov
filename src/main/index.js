@@ -80,9 +80,10 @@ ipc.on('start-nfc', function (event, arg) {
     var self = this
     console.log('Waiting for scan...')
     let uid = pn532.readPassiveTarget()
-    if (uid != null)
+    if (uid != null){
       console.log('Found UID: ', bytesToHex(uid))
       event.sender.send('lectura')
+    }
     }, 300);
 
 })

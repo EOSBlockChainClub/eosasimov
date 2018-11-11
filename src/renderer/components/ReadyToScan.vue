@@ -14,7 +14,7 @@
 </template>
 
 <script>
-
+  import { ipcRenderer } from 'electron'
   export default {
 
     name:'ReadyToScan',
@@ -24,7 +24,7 @@
       }
     },
     mounted(){
-      this.$electron.ipcRenderer.send('ping')
+      ipcRenderer.send('ping')
     }
   }
 </script>

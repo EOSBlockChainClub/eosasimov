@@ -24,7 +24,7 @@
       }
     },
     mounted(){
-      ipcRenderer.send('ping')
+      ipcRenderer.send('start-nfc')
     }
   }
 </script>

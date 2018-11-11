@@ -76,12 +76,12 @@ ipc.on('start-nfc', function (event, arg) {
   pn532.samConfiguration()
 
   // Poll until we get a response and print the UID
-  /*intervalo = setInterval(function(){
+  intervalo = setInterval(function(){
     console.log('Waiting for scan...')
     let uid = pn532.readPassiveTarget()
     if (uid == null) continue
     console.log('Found UID: ', bytesToHex(uid))
-    }, 300);*/
+    }, 300);
 
 })
 /**

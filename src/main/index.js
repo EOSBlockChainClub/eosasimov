@@ -66,8 +66,9 @@ app.on('activate', () => {
 })
 
 ipc.on('start-nfc', function (event, arg) {
+  console.log('Me mandaron llamar???')
   pn532.begin()
-
+ 
   let version = pn532.getFirmwareVersion()
   console.log('PN532 Firmware version: ', version[1] + '.' + version[2])
 
@@ -75,12 +76,12 @@ ipc.on('start-nfc', function (event, arg) {
   pn532.samConfiguration()
 
   // Poll until we get a response and print the UID
-  intervalo = setInterval(function(){
+  /*intervalo = setInterval(function(){
     console.log('Waiting for scan...')
     let uid = pn532.readPassiveTarget()
     if (uid == null) continue
     console.log('Found UID: ', bytesToHex(uid))
-    }, 300);
+    }, 300);*/
 
 })
 /**

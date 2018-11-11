@@ -1,4 +1,12 @@
 import { app, BrowserWindow } from 'electron'
+
+const { Api, JsonRpc, RpcError, JsSignatureProvider } = require('eosjs');
+const fetch = require('node-fetch');                           
+const { TextDecoder, TextEncoder } = require('text-encoding'); 
+const defaultPrivateKey = "5JqLtLnRSyywckiJWBrgNucFqPevf7ffwWhknVgpuNaiEWiD6NY";
+const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
+const rpc = new JsonRpc('https://api.eosnewyork.io', { fetch });
+const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
 const ipc = require('electron').ipcMain
 import PN532 from 'pn532-spi'
 let bytesToHex = function(arr) {
@@ -87,6 +95,39 @@ ipc.on('start-nfc', function (event, arg) {
     }
     }, 300);
 
+})
+ipc.on('transfer', function (event, arg) {
+  console.log('Voy a transferir')
+      
+  (async () => {
+    try {
+      const result = await api.transact({
+        actions: [{
+          account: 'eosio.token',
+          name: 'transfer',
+          authorization: [{
+            actor: 'asimovvomisa',
+            permission: 'active',
+          }],
+          data: {
+            from: 'asimovvomisa',
+            to: 'nickopinedas',
+            quantity: '0.0001 EOS',
+            memo: '',
+          },
+        }]
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30,
+      });
+      console.dir(result);
+      event.sender.send('lectura')
+    } catch (e) {
+      console.log('\nCaught exception: ' + e);
+      if (e instanceof RpcError)
+        console.log(JSON.stringify(e.json, null, 2));
+    }
+  })()
 })
 /**
  * Auto Updater

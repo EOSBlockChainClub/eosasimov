@@ -19,8 +19,11 @@
     },
     mounted(){
       ipcRenderer.send('start-nfc')
+      
       ipcRenderer.on('lectura', (event, data) => {
-        
+        ipcRenderer.send('start-nfc')
+      })
+      ipcRenderer.on('aceptado', (event, data) => {        
         this.next();
       })
     }

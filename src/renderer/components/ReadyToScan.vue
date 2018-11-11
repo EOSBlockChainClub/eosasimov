@@ -24,6 +24,7 @@
       }
     },
     mounted(){
+      this.$electron.ipcRenderer.send('ping')
     }
   }
 </script>

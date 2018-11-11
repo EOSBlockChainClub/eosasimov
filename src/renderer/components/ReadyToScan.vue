@@ -24,7 +24,6 @@
       }
     },
     mounted(){
-       setTimeout(this.next, 3000);
     }
   }
 </script>

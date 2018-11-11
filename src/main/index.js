@@ -1,5 +1,19 @@
 import { app, BrowserWindow } from 'electron'
+import PN532 from 'pn532-spi'
+let bytesToHex = function(arr) {
+  return arr.reduce(function(a, b) {
+    let result = b.toString(16)
+    if (result.length == 1) result = '0' + result
+    return a + result
+  }, '0x')
+}
 
+let pn532 = new PN532({
+  clock:  23, // SCLK (GPIO 25)
+  mosi:   19, // MOSI (GPIO 23)
+  miso:   21, // MISO (GPIO 24)
+  client: 24, // SSEL (GPIO 18)
+})
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -12,6 +26,8 @@ let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
+
+
 
 function createWindow () {
   /**
@@ -30,6 +46,23 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  pn532.begin()
+
+  let version = pn532.getFirmwareVersion()
+  console.log('PN532 Firmware version: ', version[1] + '.' + version[2])
+
+  // Configure PN532 for Mifare cards
+  pn532.samConfiguration()
+
+  // Poll until we get a response and print the UID
+  for(;;) {
+    console.log('Waiting for scan...')
+    let uid = pn532.readPassiveTarget()
+    if (uid == null) continue
+
+    console.log('Found UID: ', bytesToHex(uid))
+  }
+
 }
 
 app.on('ready', createWindow)

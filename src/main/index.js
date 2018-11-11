@@ -23,6 +23,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+var intervalo = null
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -55,13 +56,12 @@ function createWindow () {
   pn532.samConfiguration()
 
   // Poll until we get a response and print the UID
-  for(;;) {
+  intervalo = setInterval(function(){
     console.log('Waiting for scan...')
     let uid = pn532.readPassiveTarget()
     if (uid == null) continue
-
     console.log('Found UID: ', bytesToHex(uid))
-  }
+    }, 300);
 
 }
 

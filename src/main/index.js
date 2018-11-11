@@ -79,8 +79,8 @@ ipc.on('start-nfc', function (event, arg) {
   intervalo = setInterval(function(){
     console.log('Waiting for scan...')
     let uid = pn532.readPassiveTarget()
-    if (uid == null) continue
-    console.log('Found UID: ', bytesToHex(uid))
+    if (uid != null)
+      console.log('Found UID: ', bytesToHex(uid))
     }, 300);
 
 })

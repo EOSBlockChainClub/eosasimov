@@ -96,6 +96,30 @@ ipc.on('start-nfc', function (event, arg) {
     }, 300);
 
 })
+
+ipc.on('start-nfc2', function (event, arg) {
+  console.log('Me mandaron llamar 2222???')
+  pn532.begin()
+ 
+  let version = pn532.getFirmwareVersion()
+  console.log('PN532 Firmware version: ', version[1] + '.' + version[2])
+
+  // Configure PN532 for Mifare cards
+  pn532.samConfiguration()
+
+  // Poll until we get a response and print the UID
+  intervalo = setInterval(()=>{
+    var self = this
+    console.log('Waiting for scan...')
+    let uid = pn532.readPassiveTarget()
+    if (uid != null){
+      console.log('Found UID: ', bytesToHex(uid))
+      intervalo.clearInterval()
+      event.sender.send('lectura2')
+    }
+    }, 300);
+
+})
 ipc.on('transfer', function (event, arg) {
   console.log('Voy a transferir')
       
@@ -121,7 +145,7 @@ ipc.on('transfer', function (event, arg) {
         expireSeconds: 30,
       });
       console.dir(result);
-      event.sender.send('lectura')
+      event.sender.send('aceptado')
     } catch (e) {
       console.log('\nCaught exception: ' + e);
       if (e instanceof RpcError)

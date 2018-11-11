@@ -18,10 +18,10 @@
       }
     },
     mounted(){
-      ipcRenderer.send('start-nfc')
+      ipcRenderer.send('start-nfc2')
       
       ipcRenderer.on('lectura', (event, data) => {
-        ipcRenderer.send('start-nfc')
+        ipcRenderer.send('')
       })
       ipcRenderer.on('aceptado', (event, data) => {        
         this.next();
